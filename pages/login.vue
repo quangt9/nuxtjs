@@ -1,50 +1,57 @@
 <template>
-<section class="section">
-    <div class="container">
-        <div class="columns is-centered">
-            <div class="column is-one-third">
-                <h2 class="title has-text-centered">Login</h2>
-
-                <form method="post" @submit.prevent="login">
-                    <b-field label="Email">
-                        <b-input type="email" v-model="email" required>
-                        </b-input>
-                    </b-field>
-
-                    <b-field label="Password">
-                        <b-input type="password" v-model="password" password-reveal required>
-                        </b-input>
-                    </b-field>
-
-                    <b-button type="is-dark is-fullwidth" native-type="submit">
-                        Login
-                    </b-button>
-                </form>
+<div>
+    <div class="container" @mousemove="someMethod">
+        <div class="main">
+            <div class="bottom" ref="control">
+                <div class="control"  v-on:mousedown="hold = true"  @touchcancel="hold = false"
+  v-on:mouseup="hold = false">11111</div>
             </div>
         </div>
     </div>
-</section>
+</div>
 </template>
 
 <script>
 export default {
     data() {
         return {
-            email: '',
-            password: '',
+            hold: false,
         }
     },
     methods: {
-        async login() {
-            await this.$auth.loginWith('laravelSanctum', {
-                data: {
-                    email: this.email,
-                    password: this.password,
-                },
-            })
+        someMethod(event) {
+            let maxHeight = window.innerHeight;
+           
+            if (this.hold) {
+                console.log(event.clientY);
+                this.$refs.control.style.height = (maxHeight - event.clientY) + 'px';
+                console.log('height:' + this.$refs.control.clientHeight);
+            }
 
-            this.$router.push('/')
-        },
-    },
+        }
+    }
 }
 </script>
+
+<style>
+html,
+body,
+.container {
+    height: 100%;
+    width: 100%;
+    /* background-color: red; */
+
+}
+    .main {
+        height: 100vh;
+        background-color: bisque;
+    }
+
+.bottom {
+    width: 200px;
+    height: 300px;
+    background-color: antiquewhite;
+    bottom: 0;
+    position: absolute;
+}
+</style>
